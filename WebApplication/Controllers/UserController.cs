@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,16 @@ namespace WebApplication.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
+        private HttpClient client = new HttpClient();
+        
         [HttpGet]
-        public string getUser([FromQuery] string username, [FromQuery] string password)
+        public async Task<string> getUser([FromQuery] string username, [FromQuery] string password)
         {
-            return username + password;
+            Console.Write(username+password);
+            HttpResponseMessage c= await client.GetAsync("https://localhost:5003/Server?username="+username+"&&password="+password);
+            string answ = await c.Content.ReadAsStringAsync();
+            Console.Write(answ);
+            return answ;
         }
 
         [HttpGet]
@@ -35,7 +43,9 @@ namespace WebApplication.Controllers
         [Route("{UserId}/Greenhouse/{GreenhouseId}/CurrentData")]
         public string getCurrentData([FromRoute] int userId, int greenhouseId)
         {
-            return "Hello" + userId + greenhouseId;
+            var rng = new Random();
+            int CO2= rng.Next(0, 100);
+            return ""+CO2;
         }
 
         [HttpGet]

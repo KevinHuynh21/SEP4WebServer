@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {}
+    "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {}
   },
   "projects": {
-    "D:\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {
+    "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+        "projectUniqueName": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
         "projectName": "WebApplication",
-        "projectPath": "D:\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
-        "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-        "outputPath": "D:\\RiderProjects\\SEP4WebServer\\WebApplication\\obj\\",
+        "projectPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+        "packagesPath": "C:\\Users\\kaspe\\.nuget\\packages\\",
+        "outputPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\huynh\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\kaspe\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -61,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\huynh\\.dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
