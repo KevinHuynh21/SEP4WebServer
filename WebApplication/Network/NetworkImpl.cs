@@ -23,18 +23,23 @@ namespace WebApplication.Network
             public async Task<Message> GetCurrentData(int userID, int greenhouseID)
             {
                 string whatever = userID + ":" + greenhouseID;
-                //string jsonString = JsonSerializer.Serialize(whatever);
-                Message message = new Message(Enum.GETCURRENTDATA, whatever);
-                string jsonStringFinal = JsonSerializer.Serialize(message);
+                //Message message = new Message(Enum.GETCURRENTDATA, whatever);
+                string jsonStringFinal = JsonSerializer.Serialize(new Message
+                {
+                    command = "GETCURRENTDATA",
+                    json = whatever
+                });
                 byte[] bytes = Encoding.ASCII.GetBytes(jsonStringFinal);
                 stream.Write(bytes, 0, bytes.Length);
 
                 byte[] bytesResponse = new byte[1024 * 1024];
-                stream.Read(bytesResponse, 0, bytesResponse.Length);
-                string answer = Encoding.ASCII.GetString(bytesResponse);
-                Message deserialize = JsonSerializer.Deserialize<Message>(answer);
                 
-                return deserialize;
+                int bytesRead = stream.Read(bytesResponse, 0, bytesResponse.Length);
+
+                string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
+                Message message2 = JsonSerializer.Deserialize<Message>(response);
+                Console.WriteLine(message2.command);
+                return message2;
 
             }
         

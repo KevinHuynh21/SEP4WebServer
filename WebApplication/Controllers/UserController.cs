@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualBasic.CompilerServices;
 using WebApplication.Data;
 using WebApplication.Network;
 
@@ -43,10 +44,14 @@ namespace WebApplication.Controllers
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/CurrentData")]
-        public async Task<String> getCurrentData([FromRoute] int userId, int greenhouseId)
+        public async Task<double> getCurrentData([FromRoute] int userId, int greenhouseId)
         {
             Message message = await networkimpl.GetCurrentData(userId, greenhouseId);
-            return "";
+            Console.WriteLine(message.json);
+            double svar = DoubleType.FromString(message.json);
+            Console.WriteLine(svar);
+            //string messageSerialized = JsonSerializer.Serialize(message);
+            return svar;
         }
 
         [HttpGet]
