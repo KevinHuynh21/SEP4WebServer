@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApplication.Data;
+using WebApplication.Network;
 
 namespace WebApplication.Controllers
 {
@@ -14,6 +15,7 @@ namespace WebApplication.Controllers
     public class UserController : ControllerBase
     {
         private HttpClient client = new HttpClient();
+        private NetworkImpl networkimpl = new NetworkImpl();
         
         [HttpGet]
         public async Task<string> getUser([FromQuery] string username, [FromQuery] string password)
@@ -41,11 +43,10 @@ namespace WebApplication.Controllers
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/CurrentData")]
-        public string getCurrentData([FromRoute] int userId, int greenhouseId)
+        public async Task<String> getCurrentData([FromRoute] int userId, int greenhouseId)
         {
-            var rng = new Random();
-            int CO2= rng.Next(0, 100);
-            return ""+CO2;
+            Message message = await networkimpl.GetCurrentData(userId, greenhouseId);
+            return "";
         }
 
         [HttpGet]
