@@ -193,19 +193,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Kevin\\.nuget\\packages\\": {}
+    "C:\\Users\\kaspe\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj",
+      "projectUniqueName": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
       "projectName": "WebApplication",
-      "projectPath": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj",
-      "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\obj\\",
+      "projectPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+      "packagesPath": "C:\\Users\\kaspe\\.nuget\\packages\\",
+      "outputPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\kaspe\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
