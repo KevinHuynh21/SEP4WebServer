@@ -1,6 +1,6 @@
 ﻿namespace WebApplication.Data
 {
-    public enum Enum
+    public enum Messages
     {
         GETCURRENTDATA,
         SUCCESS

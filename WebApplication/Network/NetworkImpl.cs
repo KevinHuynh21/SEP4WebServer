@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
     using WebApplication.Data;
-using Enum = WebApplication.Data.Enum;
+using Enum = WebApplication.Data.Messages;
 
 namespace WebApplication.Network
     {
