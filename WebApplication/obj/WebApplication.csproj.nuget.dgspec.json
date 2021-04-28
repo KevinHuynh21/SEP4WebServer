@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {}
+    "C:\\Users\\marti\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {}
   },
   "projects": {
-    "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {
+    "C:\\Users\\marti\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+        "projectUniqueName": "C:\\Users\\marti\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
         "projectName": "WebApplication",
-        "projectPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
-        "packagesPath": "C:\\Users\\kaspe\\.nuget\\packages\\",
-        "outputPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\obj\\",
+        "projectPath": "C:\\Users\\marti\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+        "packagesPath": "C:\\Users\\marti\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marti\\RiderProjects\\SEP4WebServer\\WebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\kaspe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\marti\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

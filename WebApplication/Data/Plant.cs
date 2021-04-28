@@ -9,9 +9,8 @@
         public float HumidityRequirement { get; set; }
         public float TemperatureRequirement { get; set; }
         public float CO2Requirement { get; set; }
-        public float SunlightRequirement { get; set; }
 
-        public Plant(int id, string name, int plantScore, float humidityRequirement, float temperatureRequirement, float co2Requirement, float sunlightRequirement)
+        public Plant(int id, string name, int plantScore, float humidityRequirement, float temperatureRequirement, float co2Requirement)
         {
             Id = id;
             Name = name;
@@ -19,7 +18,7 @@
             HumidityRequirement = humidityRequirement;
             TemperatureRequirement = temperatureRequirement;
             CO2Requirement = co2Requirement;
-            SunlightRequirement = sunlightRequirement;
+
         }
     }
 }

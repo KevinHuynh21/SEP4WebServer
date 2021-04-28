@@ -12,9 +12,9 @@ namespace WebApplication.Data
         public float Temperature { get; set; }
         public float CO2 { get; set; }
         public float Humidity { get; set; }
-        public float Sunlight { get; set; }
+   
 
-        public Greenhouse(int id, string name, float temperature, float co2, float humidity, float sunlight)
+        public Greenhouse(int id, string name, float temperature, float co2, float humidity)
         {
             Plants = new ArrayList();
             Id = id;
@@ -22,7 +22,7 @@ namespace WebApplication.Data
             Temperature = temperature;
             CO2 = co2;
             Humidity = humidity;
-            Sunlight = sunlight;
+          
         }
 
         public void AddPlant(Plant plant)

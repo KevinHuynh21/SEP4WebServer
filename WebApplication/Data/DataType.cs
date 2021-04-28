@@ -4,7 +4,6 @@
     {
         HUMIDITY,
         CO2,
-        LUMINANCE,
         TEMPERATURE
         
     }

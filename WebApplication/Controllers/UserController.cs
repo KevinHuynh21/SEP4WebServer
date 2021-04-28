@@ -21,96 +21,83 @@ namespace WebApplication.Controllers
         [HttpGet]
         public async Task<string> getUser([FromQuery] string username, [FromQuery] string password)
         {
-            Console.Write(username+password);
-            HttpResponseMessage c= await client.GetAsync("https://localhost:5003/Server?username="+username+"&&password="+password);
-            string answ = await c.Content.ReadAsStringAsync();
-            Console.Write(answ);
-            return answ;
+            Message message = await networkimpl.getUser(username, password);
+            return message.json;
         }
 
         [HttpGet]
         [Route("{UserId}/Greenhouse")]
-        public string getMyGreenhouses([FromRoute] int userId)
+        public async Task<String> getMyGreenhouses([FromRoute] int userId)
         {
-            return "Here are your greenhouses" + userId;
+            Console.Write(userId);
+            Message message = await networkimpl.getGreenhouses(userId);
+            return message.json;
         }
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}")]
-        public string getGreenhouseById([FromRoute] int userId)
+        public async Task<String> getGreenhouseById([FromRoute] int userId,int greenHouseID)
         {
-            return "GreenhouseById" + userId;
+            Message message = await networkimpl.getGreenhouseByID(userId, greenHouseID);
+            Console.WriteLine(message.json);
+            return message.json;
         }
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/CurrentData")]
-        public async Task<double> getCurrentData([FromRoute] int userId, int greenhouseId)
+        public async Task<String> getCurrentData([FromRoute] int userId, int greenhouseId)
         {
             Message message = await networkimpl.GetCurrentData(userId, greenhouseId);
-            Console.WriteLine(message.json);
-            double svar = DoubleType.FromString(message.json);
-            Console.WriteLine(svar);
-            //string messageSerialized = JsonSerializer.Serialize(message);
-            return svar;
+            return message.json;
         }
 
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/averageData")]
-        public string getAverageData([FromRoute] int userId, int greenhouseId)
+        public async Task<string> getAverageData([FromRoute] int userId, int greenhouseId)
         {
-            return "Helloaverage" + userId + greenhouseId;
+            Message message = await networkimpl.getAverageData(userId, greenhouseId);
+            return message.json;
         }
 
         [HttpPost]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/waternow")]
-        public StatusCodeResult waterNow([FromRoute] int userId, int greenhouseId)
+        public async Task<ActionResult> waterNow([FromRoute] int userId, int greenhouseId)
         {
-            //WaterNow
+            await networkimpl.waterNow(userId, greenhouseId);
             return StatusCode(200);
         }
 
         [HttpPost]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/openWindow")]
-        public StatusCodeResult openWindow([FromRoute] int userId, int greenhouseId)
+        public async Task<ActionResult> openWindow([FromRoute] int userId, int greenhouseId)
         {
-            //Opens window
+            await networkimpl.openWindow(userId, greenhouseId);
             return StatusCode(200);
         }
 
         [HttpPost]
         [Route("{UserId}/addGreenhouse")]
-        public string addGreenhouse([FromBody] Greenhouse greenhouse)
+        public async Task<ActionResult<String>> addGreenhouse([FromBody] Greenhouse greenhouse)
         {
-            //Returns Id of the greenhouse
-            if (greenhouse != null)
-            {
-                return "Greenhouse added" + greenhouse.Id;
-            }
-            return "Greenhouse is null";
+            Message message = await networkimpl.addGreenHouse(greenhouse);
+            return Ok(message.json);
         }
 
         [HttpPost]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/addPlant")]
-        public string addPlant([FromBody] Plant plant)
+        public async Task<ActionResult<String>> addPlant([FromBody] Plant plant)
         {
-            if (plant != null)
-            {
-                return "Plant added" + plant.Id; 
-            }
-            return "plant is null";
+            Message message = await networkimpl.addPlant(plant);
+            return Ok(message.json);
         }
 
 
         [HttpPost]
         [Route("addUser")]
-        public string addUser([FromBody] User user)
+        public async Task<ActionResult<String>> addUser([FromBody] User user)
         {
-            
-            if (user != null)
-            {
-                return "User added" + user.Id;
-            }
-            return "User is null";
+            Message message = await networkimpl.addUser(user);
+            return Ok(message.json);
         }
 
     }
