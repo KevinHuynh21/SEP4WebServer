@@ -6,23 +6,35 @@ namespace WebApplication.Data
     public class Greenhouse
     {
         public ArrayList Plants;
-        public int Id { get; set; }
+        public int greenHouseID { get; set; }
         
+        public int userID { get; set; }
         public string Name { get; set; }
-        public float Temperature { get; set; }
-        public float CO2 { get; set; }
-        public float Humidity { get; set; }
+        
+        public int waterFrequency { get; set; }
+        
+        public double waterVolume { get; set; }
+        
+        public string waterTimeOfDay { get; set; }
+        
+        public string lastWaterDate { get; set; }
+        
+        public string lastMeasurement { get; set; }
+
+        public ArrayList sensorData { get; set; }
    
 
-        public Greenhouse(int id, string name, float temperature, float co2, float humidity)
+        public Greenhouse(string name, int greenHouseId, int userId,ArrayList plants,int waterFrequency,double waterVolume,string waterTimeOfDay, string lastWaterDate,ArrayList sensorData)
         {
-            Plants = new ArrayList();
-            Id = id;
+            Plants = plants;
+            greenHouseID = greenHouseId;
+            userID = userId;
             Name = name;
-            Temperature = temperature;
-            CO2 = co2;
-            Humidity = humidity;
-          
+            this.waterFrequency = waterFrequency;
+            this.waterVolume = waterVolume;
+            this.waterTimeOfDay = waterTimeOfDay;
+            this.lastWaterDate = lastWaterDate;
+            this.sensorData = sensorData;
         }
 
         public void AddPlant(Plant plant)

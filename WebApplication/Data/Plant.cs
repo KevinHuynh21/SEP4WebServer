@@ -2,17 +2,18 @@
 {
     public class Plant
     {
-        public int Id { get; set; }
-        
+        public int plantID { get; set; }
+        public int greenHouseID { get; set; }
         public string Name { get; set; }
         public int PlantScore { get; set; }
         public float HumidityRequirement { get; set; }
         public float TemperatureRequirement { get; set; }
         public float CO2Requirement { get; set; }
 
-        public Plant(int id, string name, int plantScore, float humidityRequirement, float temperatureRequirement, float co2Requirement)
+        public Plant(int plantId, int greenHouseId, string name, int plantScore, float humidityRequirement, float temperatureRequirement, float co2Requirement)
         {
-            Id = id;
+            plantID = plantId;
+            greenHouseID = greenHouseId;
             Name = name;
             PlantScore = plantScore;
             HumidityRequirement = humidityRequirement;

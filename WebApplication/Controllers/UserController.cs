@@ -87,6 +87,7 @@ namespace WebApplication.Controllers
         [Route("{UserId}/Greenhouse/{GreenhouseId}/addPlant")]
         public async Task<ActionResult<String>> addPlant([FromBody] Plant plant)
         {
+            
             Message message = await networkimpl.addPlant(plant);
             return Ok(message.json);
         }
