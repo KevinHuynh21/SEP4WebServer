@@ -37,6 +37,11 @@ namespace WebApplication.Data
             this.sensorData = sensorData;
         }
 
+        public Greenhouse()
+        {
+            
+        }
+
         public void AddPlant(Plant plant)
         {
             Plants.Add(plant);

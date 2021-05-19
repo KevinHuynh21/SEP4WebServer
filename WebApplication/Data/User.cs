@@ -14,5 +14,11 @@ namespace WebApplication.Data
             Username = username;
             Password = password;
         }
+
+        public User(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
     }
 }

@@ -21,5 +21,10 @@
             CO2Requirement = co2Requirement;
 
         }
+
+        public Plant()
+        {
+            
+        }
     }
 }
