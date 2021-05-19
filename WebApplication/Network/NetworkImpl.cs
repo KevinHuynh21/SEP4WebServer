@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
     using System.Text;
@@ -123,7 +124,54 @@ namespace WebApplication.Network
                 int bytesRead = stream.Read(bytesResponse, 0, bytesResponse.Length);
 
                 string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
-                Message message = JsonSerializer.Deserialize<Message>(response);
+                String[] split = response.Split("json\":\"");
+                String test = split[1].Replace("\\", "");
+                Char[] chars = test.ToCharArray();
+                chars[chars.Length - 2] = ' ';
+                chars[chars.Length - 1] = ' ';
+                test = new string(chars);
+                String test2 = test.Replace(" ", "");
+                ApiCurrentDataPackage apiCurrentDataPackage =
+                    JsonSerializer.Deserialize<ApiCurrentDataPackage>(test2);
+                double CO2 = 0;
+                double Temperature = 0;
+                double Humidity = 0;
+                int count = 0;
+                for (int i = 0; i < apiCurrentDataPackage.data.Count; i++)
+                {
+                    if (apiCurrentDataPackage.data[i].type == DataType.CO2)
+                    {
+                        CO2 += apiCurrentDataPackage.data[i].data;
+                        count++;
+                    }
+                    else if (apiCurrentDataPackage.data[i].type == DataType.TEMPERATURE)
+                    {
+                        Temperature += apiCurrentDataPackage.data[i].data;
+                       
+                    }
+                    else if (apiCurrentDataPackage.data[i].type == DataType.HUMIDITY)
+                    {
+                        Humidity += apiCurrentDataPackage.data[i].data;
+                    }
+                }
+                Console.WriteLine("Count: "+ count + " CO2: " + CO2 + " Temperature: "+ Temperature + " Humidity: "+ Humidity);
+                CO2 = CO2 / count;
+                Temperature = Temperature / count;
+                Humidity = Humidity / count;
+                DataContainer CO2Container = new DataContainer(CO2, DataType.CO2);
+                DataContainer temperatureContainer = new DataContainer(Temperature, DataType.TEMPERATURE);
+                DataContainer HumidityContainer = new DataContainer(Humidity, DataType.HUMIDITY);
+                List<DataContainer> dataContainers = new List<DataContainer>();
+                dataContainers.Add(CO2Container);
+                dataContainers.Add(temperatureContainer);
+                dataContainers.Add(HumidityContainer);
+                ApiCurrentDataPackage apiCurrent = new ApiCurrentDataPackage(dataContainers,apiCurrentDataPackage.lastDataPoint);
+                Console.WriteLine(apiCurrent.data.ToString());
+                String current = JsonSerializer.Serialize(apiCurrent);
+                Message message = new Message();
+                message.command = "SUCCES";
+                message.json = current;
+                Console.WriteLine(message.json);
                 return message;
             }
 

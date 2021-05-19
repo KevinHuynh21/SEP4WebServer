@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication.Data
@@ -7,9 +8,9 @@ namespace WebApplication.Data
     {
         public List<DataContainer> data { get; set; }
         
-        public TimestampAttribute lastDataPoint { get; set; }
+        public DateTime lastDataPoint { get; set; }
 
-        public ApiCurrentDataPackage(List<DataContainer> data, TimestampAttribute lastDataPoint)
+        public ApiCurrentDataPackage(List<DataContainer> data, DateTime lastDataPoint)
         {
             this.data = data;
             this.lastDataPoint = lastDataPoint;
