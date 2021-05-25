@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
     using System.Text;
     using System.Text.Json;
@@ -19,7 +20,10 @@ namespace WebApplication.Network
             private TcpClient client;
             public NetworkImpl()
             {
-                client = new TcpClient("127.0.0.1", 6969);
+                client = new TcpClient();
+                IPAddress ipAddress = Dns.GetHostEntry ("Growbrodbserver-env.eba-equmqmrv.us-east-2.elasticbeanstalk.com").AddressList[0];
+                IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, 6969);
+                client.Connect(ipEndPoint);
                 stream = client.GetStream();
             }
 
