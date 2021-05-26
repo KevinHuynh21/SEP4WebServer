@@ -47,8 +47,8 @@ namespace WebApplication.Controllers
         [Route("{UserId}/Greenhouse/{GreenhouseId}/CurrentData")]
         public async Task<String> getCurrentData([FromRoute] int userId, int greenhouseId)
         {
-            Message message = await networkimpl.GetCurrentData(userId, greenhouseId);
-            return message.json;
+            //Message message = networkimpl.GetCurrentData(userId, greenhouseId);
+            return new Message().json;
         }
 
         [HttpGet]
@@ -67,16 +67,16 @@ namespace WebApplication.Controllers
             return StatusCode(200);
         }
 
-        [HttpPost]
-        [Route("{UserId}/Greenhouse/{GreenhouseId}/openWindow")]
-        public async Task<ActionResult> openWindow([FromRoute] int userId, int greenhouseId)
+        [HttpGet]
+        [Route("{UserId}/Greenhouse/{GreenhouseId}/openWindow/{openOrClose}")]
+        public async Task<ActionResult> openWindow([FromRoute] int userId, int greenhouseId, int openOrClose)
         {
-            await networkimpl.openWindow(userId, greenhouseId);
+            await networkimpl.openWindow(userId, greenhouseId,openOrClose);
             return StatusCode(200);
         }
 
         [HttpPost]
-        [Route("{UserId}/addGreenhouse")]
+        [Route("{UserId}/addGreenhouse/")]
         public async Task<ActionResult<String>> addGreenhouse([FromBody] Greenhouse greenhouse)
         {
             Message message = await networkimpl.addGreenHouse(greenhouse);
@@ -87,7 +87,6 @@ namespace WebApplication.Controllers
         [Route("{UserId}/Greenhouse/{GreenhouseId}/addPlant")]
         public async Task<ActionResult<String>> addPlant([FromBody] Plant plant)
         {
-            
             Message message = await networkimpl.addPlant(plant);
             return Ok(message.json);
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WebApplication.Controllers;
 using WebApplication.Data;
+using WebApplication.Network;
 
 namespace WebApplication
 {
@@ -17,6 +19,7 @@ namespace WebApplication
         
         public static async Task Main(string[] args)
         {
+            new NetworkImpl().addUser(new User("dee", "dum"));
             CreateHostBuilder(args).Build().Run();
         }
 
