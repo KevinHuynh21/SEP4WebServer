@@ -17,9 +17,7 @@ namespace WebApplication
         
         public static async Task Main(string[] args)
         {
-           
             CreateHostBuilder(args).Build().Run();
-            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
