@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
     using System.Text;
     using System.Text.Json;
@@ -19,7 +20,11 @@ namespace WebApplication.Network
             private TcpClient client;
             public NetworkImpl()
             {
-                client = new TcpClient("127.0.0.1", 6969);
+                client = new TcpClient();
+                string ip = "3.14.79.103";
+                IPAddress ipAddress = IPAddress.Parse(ip);
+                IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, 6969);
+                client.Connect(ipEndPoint);
                 stream = client.GetStream();
             }
 
