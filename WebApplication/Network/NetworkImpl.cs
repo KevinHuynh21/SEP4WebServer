@@ -256,22 +256,10 @@ namespace WebApplication.Network
 
            public async Task waterNow(int userId, int greenHouseID)
            {
-                  string ids = userId + ":" + greenHouseID;
-                  string jsonString = JsonSerializer.Serialize(new Message
-                  {
-                      command = "WATERNOW",
-                      json = ids
-                   });
-                   byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
-                  stream.Write(bytes,0,bytes.Length);
-           }
-
-           public async Task openWindow(int userId, int greenHouseID,int openOrClose)
-           {
                rds = new SqlConnection(connectionString);
                Console.WriteLine("open");
                rds.Open();
-               string statement = "update dbo.Drivhus set WindowIsOpen=1 where DrivhusID=@GH_ID";
+               string statement = "update dbo.Drivhus set WaterNow=1 where DrivhusID=@GH_ID";
                Console.WriteLine("command");
                command = new SqlCommand(statement, rds);
                command.Parameters.AddWithValue("@GH_ID", greenHouseID);
@@ -284,9 +272,38 @@ namespace WebApplication.Network
                Console.WriteLine("close and dispose");
                command.Dispose();
                rds.Close();
+                 /* string ids = userId + ":" + greenHouseID;
+                  string jsonString = JsonSerializer.Serialize(new Message
+                  {
+                      command = "WATERNOW",
+                      json = ids
+                   });
+                   byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
+                  stream.Write(bytes,0,bytes.Length);*/
+           }
+
+           public async Task openWindow(int userId, int greenHouseID,int openOrClose)
+           {
+               rds = new SqlConnection(connectionString);
+               Console.WriteLine("open");
+               rds.Open();
+               string statement = "update dbo.Drivhus set WindowIsOpen=@WinowCommand where DrivhusID=@GH_ID";
+               Console.WriteLine("command");
+               command = new SqlCommand(statement, rds);
+               command.Parameters.AddWithValue("@GH_ID", greenHouseID);
+               command.Parameters.AddWithValue("@WindowCommand", openOrClose);
+               Console.WriteLine("adapter");
+               adapter = new SqlDataAdapter();
+               Console.WriteLine("execute");
+               adapter.UpdateCommand = command;
+               adapter.UpdateCommand.ExecuteNonQuery();
+               
+               Console.WriteLine("close and dispose");
+               command.Dispose();
+               rds.Close();
                
                
-               Console.WriteLine("send to java");
+             /*  Console.WriteLine("send to java");
                if (openOrClose==1)
                {
                    string ids = userId + ":" + greenHouseID;
@@ -309,7 +326,7 @@ namespace WebApplication.Network
                    });
                    byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
                    stream.Write(bytes, 0, bytes.Length);
-               }
+               }*/
                
            }
 
