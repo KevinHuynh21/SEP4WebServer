@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {}
+    "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {
+    "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+        "projectUniqueName": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
         "projectName": "WebApplication",
-        "projectPath": "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
-        "packagesPath": "C:\\Users\\ItsAl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebApplication\\obj\\",
+        "projectPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+        "packagesPath": "C:\\Users\\kaspe\\.nuget\\packages\\",
+        "outputPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ItsAl\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\kaspe\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -48,6 +46,10 @@
               "target": "Package",
               "version": "[6.0.0-preview.4.21253.1, )"
             },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.0-preview.4.21253.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
@@ -63,12 +65,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[5.0.4, 5.0.4]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -77,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.3.21202.5\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
