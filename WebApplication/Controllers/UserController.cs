@@ -27,28 +27,27 @@ namespace WebApplication.Controllers
 
         [HttpGet]
         [Route("{UserId}/Greenhouse")]
-        public async Task<String> getMyGreenhouses([FromRoute] int userId)
+        public async Task<string> getMyGreenhouses([FromRoute] int userId)
         {
             Console.Write(userId);
-            Message message = await networkimpl.getGreenhouses(userId);
-            return message.json;
+            string message = networkimpl.getGreenhouses(userId);
+            return message;
         }
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}")]
-        public async Task<String> getGreenhouseById([FromRoute] int userId,int greenHouseID)
+        public async Task<string> getGreenhouseById([FromRoute] int userId,int greenHouseID)
         {
-            Message message = await networkimpl.getGreenhouseByID(userId, greenHouseID);
-            Console.WriteLine(message.json);
-            return message.json;
+            string message = networkimpl.getGreenhouseByID(userId, greenHouseID);
+           return message;
         }
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/CurrentData")]
         public async Task<String> getCurrentData([FromRoute] int userId, int greenhouseId)
         {
-            Message message = await networkimpl.GetCurrentData(userId, greenhouseId);
-            return message.json;
+            string message = networkimpl.GetCurrentData(userId, greenhouseId); 
+            return message ;
         }
 
         [HttpGet]
