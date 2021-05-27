@@ -51,12 +51,13 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        [Route("{UserId}/Greenhouse/{GreenhouseId}/averageData")]
-        public async Task<string> getAverageData([FromRoute] int userId, int greenhouseId)
+        [Route("{UserId}/Greenhouse/{GreenhouseId}/averageDataHistory")]
+        public async Task<string> getAverageData([FromRoute] int userId, int greenhouseId, [FromQuery] DateTime timeFrom, [FromQuery] DateTime timeTo)
         {
-            Message message = await networkimpl.getAverageData(userId, greenhouseId);
-            return message.json;
+            string message = networkimpl.getAverageData(userId, greenhouseId,timeFrom,timeTo);
+            return message;
         }
+        
 
         [HttpPost]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/waternow")]

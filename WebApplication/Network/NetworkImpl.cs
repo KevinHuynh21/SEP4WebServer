@@ -171,87 +171,104 @@ namespace WebApplication.Network
            public string getGreenhouseByID(int userId, int greenHouseID)
            {
                SqlConnection rds;
-                
-               
-
                rds = new SqlConnection(connectionString);
                rds.Open();
                Console.WriteLine("Connection Open");
-                
-               string sql, Output = "";
-               sql = "select * from dbo.Drivhus where DrivhusID = @DrivhusID and UserID = @UserID";
+               string sql;
+               
 
+               sql = "select * from dbo.drivhus where UserID = @User_ID and DrivhusID = @DrivhusID";
                command = new SqlCommand(sql, rds);
-
-               string message = null;
+               command.Parameters.AddWithValue("User_ID", userId);
+               command.Parameters.AddWithValue("DrivhusID", greenHouseID);
+               dataReader = command.ExecuteReader();
+               
+             
+               Greenhouse house = null;
+               if(dataReader.Read())
+               {
+                   house = new Greenhouse();
+                   SensorData sensTemperatur = new SensorData("Temperature", dataReader.GetDouble(5));
+                   SensorData sensCO2 = new SensorData("CO2", dataReader.GetDouble(4));
+                   SensorData sensFugtighed = new SensorData("Humidity", dataReader.GetDouble(6));
+                   house.sensorData.Add(sensTemperatur);
+                   house.sensorData.Add(sensCO2);
+                   house.sensorData.Add(sensFugtighed);
+                   house.userID = userId;
+                   house.Name = dataReader.GetString(1);
+                   house.greenHouseID = dataReader.GetInt32(0);
+                   Console.WriteLine(house.ToString());
+               }
+         
+               command.Dispose();
+               dataReader.Close();
+               rds.Close();
+               string message = JsonSerializer.Serialize(house);
                return message;
            }
 
-           public async Task<Message> getAverageData(int userId, int greenHouseID)
+           public string getAverageData(int userId, int greenHouseID,DateTime timeFrom,DateTime timeTo)
            {
-           //    string ids = userId + ":" + greenHouseID;
-           //    string jsonString = JsonSerializer.Serialize(new Message
-           //    {
-           //        command = "GETAVERAGEDATA",
-           //        json = ids
-           //    });
-           //    byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
-           //    stream.Write(bytes,0,bytes.Length);
-           //    
-           //    byte[] bytesResponse = new byte[1024 * 1024];
-           //    
-           //    int bytesRead = stream.Read(bytesResponse, 0, bytesResponse.Length);
+               SqlConnection rds;
+               rds = new SqlConnection(connectionString);
+               rds.Open();
+               Console.WriteLine("Connection Open");
+               string sql;
+               
+                    
+               sql = "SELECT D_ID,Date FROM edwh.DimDate where not (Date > @RangeTill OR Date < @RangeFrom)";
+               command = new SqlCommand(sql, rds);
+               command.Parameters.AddWithValue("@RangeTill", timeTo);
+               command.Parameters.AddWithValue("@RangeFrom", timeFrom);
+                
+               dataReader = command.ExecuteReader();
+               List<string> d_IDList = new List<string>();
+               List<DateTime> dateTimes = new List<DateTime>();
+               while (dataReader.Read())
+               {
+                   d_IDList.Add(dataReader.GetString(0));
+                   dateTimes.Add(dataReader.GetDateTime(1));
+               }
+               command.Dispose();
+               dataReader.Close();
+               List<ApiCurrentDataPackage> acdpList = new List<ApiCurrentDataPackage>();
+               Console.WriteLine(d_IDList.Count);
+               for (int i = 0; i < d_IDList.Count; i++)
+               {
 
-           //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
-           //    String[] split = response.Split("json\":\"");
-           //    String test = split[1].Replace("\\", "");
-           //    Char[] chars = test.ToCharArray();
-           //    chars[chars.Length - 2] = ' ';
-           //    chars[chars.Length - 1] = ' ';
-           //    test = new string(chars);
-           //    String test2 = test.Replace(" ", "");
-           //    ApiCurrentDataPackage apiCurrentDataPackage =
-           //        JsonSerializer.Deserialize<ApiCurrentDataPackage>(test2);
-           //    double CO2 = 0;
-           //    double Temperature = 0;
-           //    double Humidity = 0;
-           //    int count = 0;
-           //    for (int i = 0; i < apiCurrentDataPackage.data.Count; i++)
-           //    {
-           //        if (apiCurrentDataPackage.data[i].type == DataType.CO2)
-           //        {
-           //            CO2 += apiCurrentDataPackage.data[i].data;
-           //            count++;
-           //        }
-           //        else if (apiCurrentDataPackage.data[i].type == DataType.TEMPERATURE)
-           //        {
-           //            Temperature += apiCurrentDataPackage.data[i].data;
-           //           
-           //        }
-           //        else if (apiCurrentDataPackage.data[i].type == DataType.HUMIDITY)
-           //        {
-           //            Humidity += apiCurrentDataPackage.data[i].data;
-           //        }
-           //    }
-           //    Console.WriteLine("Count: "+ count + " CO2: " + CO2 + " Temperature: "+ Temperature + " Humidity: "+ Humidity);
-           //    CO2 = CO2 / count;
-           //    Temperature = Temperature / count;
-           //    Humidity = Humidity / count;
-           //    DataContainer CO2Container = new DataContainer(CO2, DataType.CO2);
-           //    DataContainer temperatureContainer = new DataContainer(Temperature, DataType.TEMPERATURE);
-           //    DataContainer HumidityContainer = new DataContainer(Humidity, DataType.HUMIDITY);
-           //    List<DataContainer> dataContainers = new List<DataContainer>();
-           //    dataContainers.Add(CO2Container);
-           //    dataContainers.Add(temperatureContainer);
-           //    dataContainers.Add(HumidityContainer);
-           //    ApiCurrentDataPackage apiCurrent = new ApiCurrentDataPackage(dataContainers,apiCurrentDataPackage.lastDataPoint);
-           //    Console.WriteLine(apiCurrent.data.ToString());
-           //    String current = JsonSerializer.Serialize(apiCurrent);
-           //    Message message = new Message();
-           //    message.command = "SUCCES";
-           //    message.json = current;
-           //    Console.WriteLine(message.json);
-           return new Message();
+                   sql = "select distinct U_ID,DH_ID,Temperatur,CO2,Fugtighed from edwh.FactManagement where U_ID = @U_ID  and DH_ID = @DH_ID and D_ID = @D_ID";
+                   command = new SqlCommand(sql, rds);
+                   command.Parameters.AddWithValue("@U_ID", userId);
+                   command.Parameters.AddWithValue("@DH_ID", greenHouseID);
+                   command.Parameters.AddWithValue("@D_ID", d_IDList[i]);
+                   dataReader = command.ExecuteReader();
+
+                   ApiCurrentDataPackage apiCurrentDataPackage;
+                   
+                   while (dataReader.Read())
+                   {
+                       List<DataContainer> DataContainers = new List<DataContainer>();
+                       DataContainer co2Container = new DataContainer(dataReader.GetDouble(3), DataType.CO2);
+                       DataContainer TemperatureContainer = new DataContainer(dataReader.GetDouble(2), DataType.TEMPERATURE);
+                       DataContainer humidityContainer = new DataContainer(dataReader.GetDouble(4), DataType.HUMIDITY);
+                       DataContainers.Add(co2Container);
+                       DataContainers.Add(TemperatureContainer);
+                       DataContainers.Add(humidityContainer);
+                       apiCurrentDataPackage = new ApiCurrentDataPackage(DataContainers, dateTimes[i]);
+                       acdpList.Add(apiCurrentDataPackage);
+                   }
+                    Console.WriteLine(acdpList.Count);
+                   command.Dispose();
+                   dataReader.Close();
+                   
+               }
+               rds.Close();
+               for (int i = 0; i < acdpList.Count; i++)
+               {
+                   Console.WriteLine(acdpList[i].data[0].data);
+               }
+             String current = JsonSerializer.Serialize(acdpList);
+             return current;
            }
 
            public async Task waterNow(int userId, int greenHouseID)
