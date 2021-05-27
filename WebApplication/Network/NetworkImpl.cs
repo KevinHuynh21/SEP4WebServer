@@ -368,9 +368,24 @@ namespace WebApplication.Network
                Console.WriteLine("execute");
                adapter.UpdateCommand = command;
                adapter.UpdateCommand.ExecuteNonQuery();
-               
                Console.WriteLine("close and dispose");
+               adapter.Dispose();
                command.Dispose();
+               for (int i = 0; i < greenhouse.sharedWith.Count; i++)
+               {
+                   statement = "INSERT INTO dbo.SharedWith (UserID,DrivhusID) VALUES (@UserID,@DrivhusID)";
+                   command = new SqlCommand(statement, rds);
+                   command.Parameters.AddWithValue("@UserID", greenhouse.sharedWith[i]);
+                   command.Parameters.AddWithValue("@DrivhusID", greenhouse.greenHouseID);
+                   adapter = new SqlDataAdapter();
+                   Console.WriteLine("execute");
+                   adapter.UpdateCommand = command;
+                   adapter.UpdateCommand.ExecuteNonQuery();
+                   Console.WriteLine("close and dispose");
+                   adapter.Dispose();
+                   command.Dispose();
+               }
+               
                rds.Close();
            //    string serializedString = JsonSerializer.Serialize(greenhouse);
            //    string jsonString = JsonSerializer.Serialize(new Message

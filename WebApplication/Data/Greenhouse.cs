@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Dynamic;
 
 namespace WebApplication.Data
@@ -22,9 +23,11 @@ namespace WebApplication.Data
         public string lastMeasurement { get; set; }
 
         public ArrayList sensorData { get; set; }
+        
+        public ArrayList sharedWith { get; set; }
    
 
-        public Greenhouse(string name, int greenHouseId, int userId,ArrayList plants,int waterFrequency,double waterVolume,string waterTimeOfDay, string lastWaterDate,ArrayList sensorData)
+        public Greenhouse(string name, int greenHouseId, int userId,ArrayList plants,int waterFrequency,double waterVolume,string waterTimeOfDay, string lastWaterDate,ArrayList sensorData, ArrayList SharedWith)
         {
             Plants = plants;
             greenHouseID = greenHouseId;
@@ -35,6 +38,8 @@ namespace WebApplication.Data
             this.waterTimeOfDay = waterTimeOfDay;
             this.lastWaterDate = lastWaterDate;
             this.sensorData = sensorData;
+            this.sharedWith = SharedWith;
+
         }
 
         public Greenhouse()
