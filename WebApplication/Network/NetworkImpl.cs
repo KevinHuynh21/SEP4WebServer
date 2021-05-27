@@ -20,17 +20,24 @@ namespace WebApplication.Network
     {
         public class NetworkImpl
         {
+            SqlConnection rds;
             SqlCommand command;
             SqlDataReader dataReader;
-            private string connectionString = @"Data Source=growbro.cdkppreaz70m.us-east-2.rds.amazonaws.com;Initial Catalog=GrowBroDWH;User ID=admin;Password=adminadmin";
+            SqlDataAdapter adapter;
+            NetworkStream stream;
+            string connectionString;
+            TcpClient client;
             public NetworkImpl()
             {
+                client = new TcpClient("127.0.0.1",6969);
+                stream = client.GetStream();
+                connectionString = @"Data Source=growbro.cdkppreaz70m.us-east-2.rds.amazonaws.com;Initial Catalog=GrowBroDWH;User ID=admin;Password=adminadmin";
             }
 
             
             public string GetCurrentData(int userID, int greenhouseID)
             {
-                SqlConnection rds;
+                
                 rds = new SqlConnection(connectionString);
                 rds.Open();
                 Console.WriteLine("Connection Open");
@@ -47,11 +54,8 @@ namespace WebApplication.Network
                 double temperatur = 0;
                 double fughtighed = 0;
                 double co2 = 0;
-                DateTime time = new DateTime();
-                string id = null;
                 while (dataReader.Read())
                 {
-                    id = dataReader.GetString(4);
                     temperatur = dataReader.GetDouble(5);
                     co2 = dataReader.GetDouble(6);
                     fughtighed = dataReader.GetDouble(7);
@@ -277,30 +281,87 @@ namespace WebApplication.Network
 
            public async Task waterNow(int userId, int greenHouseID)
            {
-           //    string ids = userId + ":" + greenHouseID;
-           //    string jsonString = JsonSerializer.Serialize(new Message
-           //    {
-           //        command = "WATERNOW",
-           //        json = ids
-           //    });
-           //    byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
-           //    stream.Write(bytes,0,bytes.Length);
+                  string ids = userId + ":" + greenHouseID;
+                  string jsonString = JsonSerializer.Serialize(new Message
+                  {
+                      command = "WATERNOW",
+                      json = ids
+                   });
+                   byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
+                  stream.Write(bytes,0,bytes.Length);
            }
 
-           public async Task openWindow(int userId, int greenHouseID)
+           public async Task openWindow(int userId, int greenHouseID,int openOrClose)
            {
-           //    string ids = userId + ":" + greenHouseID;
-           //    string jsonString = JsonSerializer.Serialize(new Message
-           //    {
-           //        command = "OPENWINDOW",
-           //        json = ids
-           //    });
-           //    byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
-           //    stream.Write(bytes,0,bytes.Length);
+               rds = new SqlConnection(connectionString);
+               Console.WriteLine("open");
+               rds.Open();
+               string statement = "update dbo.Drivhus set WindowIsOpen=1 where DrivhusID=@GH_ID";
+               Console.WriteLine("command");
+               command = new SqlCommand(statement, rds);
+               command.Parameters.AddWithValue("@GH_ID", greenHouseID);
+               Console.WriteLine("adapter");
+               adapter = new SqlDataAdapter();
+               Console.WriteLine("execute");
+               adapter.UpdateCommand = command;
+               adapter.UpdateCommand.ExecuteNonQuery();
+               
+               Console.WriteLine("close and dispose");
+               command.Dispose();
+               rds.Close();
+               
+               
+               Console.WriteLine("send to java");
+               if (openOrClose==1)
+               {
+                   string ids = userId + ":" + greenHouseID;
+                   string jsonString = JsonSerializer.Serialize(new Message
+                   {
+                       command = "OPENWINDOW",
+                       json = ids
+                   });
+                   byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
+                   stream.Write(bytes, 0, bytes.Length);
+               }
+               else if (openOrClose==0)
+               {
+                   string ids = userId + ":" + greenHouseID;
+                   Console.WriteLine("close window");
+                   string jsonString = JsonSerializer.Serialize(new Message
+                   {
+                       command = "CLOSEWINDOW",
+                       json = ids
+                   });
+                   byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
+                   stream.Write(bytes, 0, bytes.Length);
+               }
+               
            }
 
            public async Task<Message> addGreenHouse(Greenhouse greenhouse)
            {
+               rds = new SqlConnection(connectionString);
+               Console.WriteLine("open");
+               rds.Open();
+               string statement = "insert into dbo.Drivhus (DrivhusID,Navn,UserID,CO2,Temperatur,Fugtighed,WindowIsOpen) values(@GH_ID,@Name,@U_ID,@CO2,@Temp,@Hum,@WinIOP)";
+               Console.WriteLine("command");
+               command = new SqlCommand(statement, rds);
+               command.Parameters.AddWithValue("@GH_ID", greenhouse.greenHouseID);
+               command.Parameters.AddWithValue("@Name", greenhouse.Name);
+               command.Parameters.AddWithValue("@U_ID", greenhouse.userID);
+               command.Parameters.AddWithValue("@CO2", 0);
+               command.Parameters.AddWithValue("@Temp", 0);
+               command.Parameters.AddWithValue("@Hum", 0);
+               command.Parameters.AddWithValue("@WinIOP", 0);
+               Console.WriteLine("adapter");
+               adapter = new SqlDataAdapter();
+               Console.WriteLine("execute");
+               adapter.UpdateCommand = command;
+               adapter.UpdateCommand.ExecuteNonQuery();
+               
+               Console.WriteLine("close and dispose");
+               command.Dispose();
+               rds.Close();
            //    string serializedString = JsonSerializer.Serialize(greenhouse);
            //    string jsonString = JsonSerializer.Serialize(new Message
            //    {
@@ -316,11 +377,47 @@ namespace WebApplication.Network
 
            //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
            //    Message message = JsonSerializer.Deserialize<Message>(response);
-              return new Message();
+           Message message = new Message();
+           message.json = JsonSerializer.Serialize(greenhouse.greenHouseID);
+           return message;
            }
 
            public async Task<Message> addPlant(Plant plant)
            {
+               rds = new SqlConnection(connectionString);
+               rds.Open();
+               string statement = "insert into dbo.Plante (DrivhusID,Navn,TemperaturKrav,CO2Krav,FugtighedsKrav,PlanteScore) values(@GH_ID,@Name,@Temp,@CO2,@Hum,@PlSc)";
+               Console.WriteLine("command");
+               command = new SqlCommand(statement, rds);
+               command.Parameters.AddWithValue("@GH_ID", plant.greenHouseID);
+               command.Parameters.AddWithValue("@Name", plant.Name);
+               command.Parameters.AddWithValue("@Temp", plant.TemperatureRequirement);
+               command.Parameters.AddWithValue("@CO2",plant.CO2Requirement );
+               command.Parameters.AddWithValue("@Hum", plant.HumidityRequirement);
+               command.Parameters.AddWithValue("@PlSc", plant.PlantScore);
+               Console.WriteLine("adapter");
+               adapter = new SqlDataAdapter();
+               Console.WriteLine("execute");
+               adapter.UpdateCommand = command;
+               adapter.UpdateCommand.ExecuteNonQuery();
+               Console.WriteLine("close and dispose");
+               command.Dispose();
+               adapter.Dispose();
+
+               statement = "select PlanteID from dbo.Plante where Navn = @Navn AND DrivhusID = @Dh_ID ";
+               command = new SqlCommand(statement, rds);
+               command.Parameters.AddWithValue("@Navn", plant.Name);
+               command.Parameters.AddWithValue("@Dh_ID", plant.greenHouseID);
+               dataReader = command.ExecuteReader();
+               int id = -1;
+               while (dataReader.Read())
+               {
+                   id = dataReader.GetInt32(0);
+               }
+               command.Dispose();
+               dataReader.Close();
+               
+               rds.Close();
            //    string serializedString = JsonSerializer.Serialize(plant);
            //    string jsonString = JsonSerializer.Serialize(new Message
            //    {
@@ -336,11 +433,44 @@ namespace WebApplication.Network
 
            //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
            //    Message message = JsonSerializer.Deserialize<Message>(response);
-           return new Message();
+            Message message = new Message();
+            message.json = JsonSerializer.Serialize(id);
+            Console.WriteLine(id);
+            return message;
            }
 
            public async Task<Message> addUser(User user)
            {
+               rds = new SqlConnection(connectionString);
+               rds.Open();
+               string statement = "insert into dbo.Ejer (Username,Password) values(@U_Name,@Password)";
+               Console.WriteLine("command");
+               command = new SqlCommand(statement, rds);
+               command.Parameters.AddWithValue("@U_Name", user.Username);
+               command.Parameters.AddWithValue("@Password", user.Password);
+               Console.WriteLine("adapter");
+               adapter = new SqlDataAdapter();
+               Console.WriteLine("execute");
+               adapter.UpdateCommand = command;
+               adapter.UpdateCommand.ExecuteNonQuery();
+               
+               Console.WriteLine("close and dispose");
+               command.Dispose();
+               adapter.Dispose();
+               
+               statement = "select UserID from dbo.Ejer where Username = @U_Name AND Password = @PW ";
+               command = new SqlCommand(statement, rds);
+               command.Parameters.AddWithValue("@U_Name", user.Username);
+               command.Parameters.AddWithValue("@PW", user.Password);
+               dataReader = command.ExecuteReader();
+               int id = -1;
+               while (dataReader.Read())
+               {
+                   id = dataReader.GetInt32(0);
+               }
+               command.Dispose();
+               dataReader.Close();
+               rds.Close();
            //    string serializedString = JsonSerializer.Serialize(user);
            //    string jsonString = JsonSerializer.Serialize(new Message
            //    {
@@ -356,8 +486,10 @@ namespace WebApplication.Network
 
            //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
            //    Message message = JsonSerializer.Deserialize<Message>(response);
-               return new Message();
+           Message message = new Message();
+           message.json = JsonSerializer.Serialize(id);
+           Console.WriteLine(id);
+           return message;
            }
-           //
         }
     }
