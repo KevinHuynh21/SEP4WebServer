@@ -352,7 +352,7 @@ namespace WebApplication.Network
                rds = new SqlConnection(connectionString);
                Console.WriteLine("open");
                rds.Open();
-               string statement = "insert into dbo.Drivhus (DrivhusID,Navn,UserID,CO2,Temperatur,Fugtighed,WindowIsOpen) values(@GH_ID,@Name,@U_ID,@CO2,@Temp,@Hum,@WinIOP)";
+               string statement = "insert into dbo.Drivhus (DrivhusID,Navn,UserID,CO2,Temperatur,Fugtighed,WindowIsOpen,WaterNow) values(@GH_ID,@Name,@U_ID,@CO2,@Temp,@Hum,@WinIOP,@WaterNow)";
                Console.WriteLine("command");
                command = new SqlCommand(statement, rds);
                command.Parameters.AddWithValue("@GH_ID", greenhouse.greenHouseID);
@@ -362,6 +362,7 @@ namespace WebApplication.Network
                command.Parameters.AddWithValue("@Temp", 0);
                command.Parameters.AddWithValue("@Hum", 0);
                command.Parameters.AddWithValue("@WinIOP", 0);
+               command.Parameters.AddWithValue("@WaterNow", 0);
                Console.WriteLine("adapter");
                adapter = new SqlDataAdapter();
                Console.WriteLine("execute");

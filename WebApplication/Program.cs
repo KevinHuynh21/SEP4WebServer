@@ -19,7 +19,6 @@ namespace WebApplication
         
         public static async Task Main(string[] args)
         {
-            new NetworkImpl().waterNow(1, 1);
             CreateHostBuilder(args).Build().Run();
         }
 
