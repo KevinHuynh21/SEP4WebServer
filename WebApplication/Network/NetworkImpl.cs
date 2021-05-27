@@ -4,8 +4,9 @@ using System.Configuration;
 using System.Data;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Policy;
 using System.Text;
-using System.Text.Json;
+    using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR.Protocol;
@@ -56,38 +57,119 @@ namespace WebApplication.Network
                 while (dataReader.Read())
                 {
                     temperatur = dataReader.GetDouble(5);
-                    fughtighed = dataReader.GetDouble(6);
-                    co2 = dataReader.GetDouble(7);
-                    Output = Output + dataReader.GetValue(5) + " - " + dataReader.GetValue(6)+ " - " + dataReader.GetValue(7) + "\n";
+                    co2 = dataReader.GetDouble(6);
+                    fughtighed = dataReader.GetDouble(7);
+                    Output = Output + dataReader.GetValue(4) +  " - " + dataReader.GetValue(5)+ " - " + dataReader.GetValue(6)+ " - " + dataReader.GetValue(7) + "\n";
                 }
+                                
                 Console.WriteLine(Output);
+                dataReader.Close();
+                command.Dispose();
+
+                sql = "SELECT Date FROM edwh.DimDate WHERE D_ID = @D_ID";
+                command = new SqlCommand(sql, rds);
+                command.Parameters.AddWithValue("@D_ID", int.Parse(id));
                 
+                dataReader = command.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    time = dataReader.GetDateTime(0);
+                }
+
+                DataContainer temperaturContainer= new DataContainer(temperatur, DataType.TEMPERATURE);
+                DataContainer fugtighedContainer = new DataContainer(fughtighed, DataType.HUMIDITY);
+                DataContainer co2Container = new DataContainer(co2, DataType.CO2);
+
+                List<DataContainer> list = new List<DataContainer>();
+                list.Add(temperaturContainer);
+                list.Add(fugtighedContainer);
+                list.Add(co2Container);
+
+                apiCurrentDataPackage = new ApiCurrentDataPackage(list, time);
+                string message = JsonSerializer.Serialize(apiCurrentDataPackage);
+
+                Console.WriteLine(apiCurrentDataPackage.lastDataPoint);
                 dataReader.Close();
                 command.Dispose();
                 rds.Close();
 
-                return null;
+                return message;
             }
 
-            public async Task<Message> getGreenhouses(int userID)
+            public string getGreenhouses(int userID)
            {
-           //    string id = userID + "";
+               SqlConnection rds;
+               rds = new SqlConnection(connectionString);
+               rds.Open();
+               Console.WriteLine("Connection Open");
+               string sql;
 
-           //    string jsonString = JsonSerializer.Serialize(new Message
-           //    {
-           //        command = "GETGREENHOUSES",
-           //        json = id
-           //    });
-           //    byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
-           //    stream.Write(bytes,0,bytes.Length);
-           //    
-           //    byte[] bytesResponse = new byte[1024 * 1024];
-           //    
-           //    int bytesRead = stream.Read(bytesResponse, 0, bytesResponse.Length);
+               sql = "select * from edwh.DimEjer where UserID = @UserID";
+               command = new SqlCommand(sql, rds);
+               command.Parameters.AddWithValue("@UserID", userID);
+               dataReader = command.ExecuteReader();
+               
+               int uId = 0;
+               while (dataReader.Read())
+               {
+                   uId = dataReader.GetInt32(0);
+               }
+               command.Dispose();
+               dataReader.Close();
 
-           //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
-           //    Message message = JsonSerializer.Deserialize<Message>(response);
-              return new Message();
+               sql = "select D_ID, DH_ID, Temperatur, CO2,Fugtighed  from edwh.FactManagement where U_ID = @U_ID";
+               command = new SqlCommand(sql, rds);
+               command.Parameters.AddWithValue("U_ID", uId);
+               dataReader = command.ExecuteReader();
+               
+               List<int> dhID = new List<int>();
+               Greenhouse house = null;
+               List<Greenhouse> GH = new List<Greenhouse>();
+
+               do
+               {
+                  while(dataReader.Read())
+                   {
+                       house = new Greenhouse();
+                       SensorData sensTemperatur = new SensorData("Temperature", dataReader.GetDouble(2));
+                       SensorData sensCO2 = new SensorData("CO2", dataReader.GetDouble(3));
+                       SensorData sensFugtighed = new SensorData("Humidity", dataReader.GetDouble(4));
+                       house.sensorData.Add(sensTemperatur);
+                       house.sensorData.Add(sensCO2);
+                       house.sensorData.Add(sensFugtighed);
+                       house.userID = userID;
+                       dhID.Add(dataReader.GetInt32(1));
+                       GH.Add(house);
+                   }
+               } while (dataReader.NextResult());
+
+               command.Dispose();
+               dataReader.Close();
+
+               for (int i = 0; i < dhID.Count; i++)
+               {
+                   sql = "select Navn, DrivhusID from edwh.DimDrivhus where DH_ID = @DH_ID";
+
+                   command = new SqlCommand(sql, rds);
+                   command.Parameters.AddWithValue("@DH_ID", dhID[i]);
+
+                   dataReader = command.ExecuteReader();
+
+                   string name = null;
+
+                   if (dataReader.Read())
+                   {
+                       GH[i].Name = dataReader.GetString(0);
+                       GH[i].greenHouseID = dataReader.GetInt32(1); 
+                   }
+                   command.Dispose();
+                   dataReader.Close();
+                 
+               }
+               rds.Close();
+               string message = JsonSerializer.Serialize(GH[1]);
+               return message;
+   
            }
 
            public async Task<Message> getUser(String username, String password)
@@ -111,24 +193,23 @@ namespace WebApplication.Network
                return new Message();
            }
 
-           public async Task<Message> getGreenhouseByID(int userId, int greenHouseID)
+           public string getGreenhouseByID(int userId, int greenHouseID)
            {
-           //    string ids = userId + ":" + greenHouseID;
-           //    string jsonString = JsonSerializer.Serialize(new Message
-           //    {
-           //        command = "GETGREENHOUSEBYID",
-           //        json = ids
-           //    });
-           //    byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
-           //    stream.Write(bytes,0,bytes.Length);
-           //    
-           //    byte[] bytesResponse = new byte[1024 * 1024];
-           //    
-           //    int bytesRead = stream.Read(bytesResponse, 0, bytesResponse.Length);
+               SqlConnection rds;
+                
+               
 
-           //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
-           //    Message message = JsonSerializer.Deserialize<Message>(response);
-               return new Message();
+               rds = new SqlConnection(connectionString);
+               rds.Open();
+               Console.WriteLine("Connection Open");
+                
+               string sql, Output = "";
+               sql = "select * from dbo.Drivhus where DrivhusID = @DrivhusID and UserID = @UserID";
+
+               command = new SqlCommand(sql, rds);
+
+               string message = null;
+               return message;
            }
 
            public async Task<Message> getAverageData(int userId, int greenHouseID)

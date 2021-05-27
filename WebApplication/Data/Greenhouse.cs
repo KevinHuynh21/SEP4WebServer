@@ -39,7 +39,7 @@ namespace WebApplication.Data
 
         public Greenhouse()
         {
-            
+            sensorData = new ArrayList();
         }
 
         public void AddPlant(Plant plant)

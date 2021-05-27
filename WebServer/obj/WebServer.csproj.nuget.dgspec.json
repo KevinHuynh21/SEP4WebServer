@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\misc\\gitmap\\SEP4WebServer\\WebServer\\WebServer.csproj": {}
+    "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebServer\\WebServer.csproj": {}
   },
   "projects": {
-    "D:\\misc\\gitmap\\SEP4WebServer\\WebServer\\WebServer.csproj": {
+    "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebServer\\WebServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\misc\\gitmap\\SEP4WebServer\\WebServer\\WebServer.csproj",
+        "projectUniqueName": "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebServer\\WebServer.csproj",
         "projectName": "WebServer",
-        "projectPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebServer\\WebServer.csproj",
-        "packagesPath": "C:\\Users\\kaspe\\.nuget\\packages\\",
-        "outputPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebServer\\obj\\",
+        "projectPath": "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebServer\\WebServer.csproj",
+        "packagesPath": "C:\\Users\\ItsAl\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ItsAl\\RiderProjects\\SEP4WebServer\\WebServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\kaspe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ItsAl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -53,6 +55,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[5.0.4, 5.0.4]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -61,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100-preview.3.21202.5\\RuntimeIdentifierGraph.json"
         }
       }
     }
