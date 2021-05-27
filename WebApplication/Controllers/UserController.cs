@@ -21,43 +21,43 @@ namespace WebApplication.Controllers
         [HttpGet]
         public async Task<string> getUser([FromQuery] string username, [FromQuery] string password)
         {
-            Message message = await networkimpl.getUser(username, password);
-            return message.json;
+            string message = networkimpl.getUser(username, password);
+            return message;
         }
 
         [HttpGet]
         [Route("{UserId}/Greenhouse")]
-        public async Task<String> getMyGreenhouses([FromRoute] int userId)
+        public async Task<string> getMyGreenhouses([FromRoute] int userId)
         {
             Console.Write(userId);
-            Message message = await networkimpl.getGreenhouses(userId);
-            return message.json;
+            string message = networkimpl.getGreenhouses(userId);
+            return message;
         }
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}")]
-        public async Task<String> getGreenhouseById([FromRoute] int userId,int greenHouseID)
+        public async Task<string> getGreenhouseById([FromRoute] int userId,int greenHouseID)
         {
-            Message message = await networkimpl.getGreenhouseByID(userId, greenHouseID);
-            Console.WriteLine(message.json);
-            return message.json;
+            string message = networkimpl.getGreenhouseByID(userId, greenHouseID);
+           return message;
         }
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/CurrentData")]
         public async Task<String> getCurrentData([FromRoute] int userId, int greenhouseId)
         {
-            Message message = await networkimpl.GetCurrentData(userId, greenhouseId);
-            return message.json;
+            string message = networkimpl.GetCurrentData(userId, greenhouseId); 
+            return message ;
         }
 
         [HttpGet]
-        [Route("{UserId}/Greenhouse/{GreenhouseId}/averageData")]
-        public async Task<string> getAverageData([FromRoute] int userId, int greenhouseId)
+        [Route("{UserId}/Greenhouse/{GreenhouseId}/averageDataHistory")]
+        public async Task<string> getAverageData([FromRoute] int userId, int greenhouseId, [FromQuery] DateTime timeFrom, [FromQuery] DateTime timeTo)
         {
-            Message message = await networkimpl.getAverageData(userId, greenhouseId);
-            return message.json;
+            string message = networkimpl.getAverageData(userId, greenhouseId,timeFrom,timeTo);
+            return message;
         }
+        
 
         [HttpPost]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/waternow")]
@@ -67,16 +67,16 @@ namespace WebApplication.Controllers
             return StatusCode(200);
         }
 
-        [HttpPost]
-        [Route("{UserId}/Greenhouse/{GreenhouseId}/openWindow")]
-        public async Task<ActionResult> openWindow([FromRoute] int userId, int greenhouseId)
+        [HttpGet]
+        [Route("{UserId}/Greenhouse/{GreenhouseId}/openWindow/{openOrClose}")]
+        public async Task<ActionResult> openWindow([FromRoute] int userId, int greenhouseId, int openOrClose)
         {
-            await networkimpl.openWindow(userId, greenhouseId);
+            await networkimpl.openWindow(userId, greenhouseId,openOrClose);
             return StatusCode(200);
         }
 
         [HttpPost]
-        [Route("{UserId}/addGreenhouse")]
+        [Route("{UserId}/addGreenhouse/")]
         public async Task<ActionResult<String>> addGreenhouse([FromBody] Greenhouse greenhouse)
         {
             Message message = await networkimpl.addGreenHouse(greenhouse);
@@ -87,7 +87,6 @@ namespace WebApplication.Controllers
         [Route("{UserId}/Greenhouse/{GreenhouseId}/addPlant")]
         public async Task<ActionResult<String>> addPlant([FromBody] Plant plant)
         {
-            
             Message message = await networkimpl.addPlant(plant);
             return Ok(message.json);
         }
