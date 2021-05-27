@@ -21,8 +21,8 @@ namespace WebApplication.Controllers
         [HttpGet]
         public async Task<string> getUser([FromQuery] string username, [FromQuery] string password)
         {
-            Message message = await networkimpl.getUser(username, password);
-            return message.json;
+            string message = networkimpl.getUser(username, password);
+            return message;
         }
 
         [HttpGet]

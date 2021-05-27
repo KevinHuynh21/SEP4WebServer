@@ -29,9 +29,8 @@ namespace WebApplication.Network
             TcpClient client;
             public NetworkImpl()
             {
-                client = new TcpClient("127.0.0.1",6969);
-                stream = client.GetStream();
                 connectionString = @"Data Source=growbro.cdkppreaz70m.us-east-2.rds.amazonaws.com;Initial Catalog=GrowBroDWH;User ID=admin;Password=adminadmin";
+                getUser("Kasper", "21345");
             }
 
             
@@ -54,8 +53,10 @@ namespace WebApplication.Network
                 double temperatur = 0;
                 double fughtighed = 0;
                 double co2 = 0;
+                string id = null;
                 while (dataReader.Read())
                 {
+                    id = dataReader.GetString(1);
                     temperatur = dataReader.GetDouble(5);
                     co2 = dataReader.GetDouble(6);
                     fughtighed = dataReader.GetDouble(7);
@@ -71,6 +72,7 @@ namespace WebApplication.Network
                 command.Parameters.AddWithValue("@D_ID", int.Parse(id));
                 
                 dataReader = command.ExecuteReader();
+                DateTime time = new DateTime();
                 while (dataReader.Read())
                 {
                     time = dataReader.GetDateTime(0);
@@ -103,94 +105,67 @@ namespace WebApplication.Network
                rds.Open();
                Console.WriteLine("Connection Open");
                string sql;
+               
 
-               sql = "select * from edwh.DimEjer where UserID = @UserID";
+               sql = "select * from dbo.drivhus where UserID = @User_ID";
                command = new SqlCommand(sql, rds);
-               command.Parameters.AddWithValue("@UserID", userID);
+               command.Parameters.AddWithValue("User_ID", userID);
                dataReader = command.ExecuteReader();
                
-               int uId = 0;
-               while (dataReader.Read())
-               {
-                   uId = dataReader.GetInt32(0);
-               }
-               command.Dispose();
-               dataReader.Close();
-
-               sql = "select D_ID, DH_ID, Temperatur, CO2,Fugtighed  from edwh.FactManagement where U_ID = @U_ID";
-               command = new SqlCommand(sql, rds);
-               command.Parameters.AddWithValue("U_ID", uId);
-               dataReader = command.ExecuteReader();
-               
-               List<int> dhID = new List<int>();
+             
                Greenhouse house = null;
                List<Greenhouse> GH = new List<Greenhouse>();
-
-               do
-               {
+               
                   while(dataReader.Read())
                    {
                        house = new Greenhouse();
-                       SensorData sensTemperatur = new SensorData("Temperature", dataReader.GetDouble(2));
-                       SensorData sensCO2 = new SensorData("CO2", dataReader.GetDouble(3));
-                       SensorData sensFugtighed = new SensorData("Humidity", dataReader.GetDouble(4));
+                       SensorData sensTemperatur = new SensorData("Temperature", dataReader.GetDouble(5));
+                       SensorData sensCO2 = new SensorData("CO2", dataReader.GetDouble(4));
+                       SensorData sensFugtighed = new SensorData("Humidity", dataReader.GetDouble(6));
                        house.sensorData.Add(sensTemperatur);
                        house.sensorData.Add(sensCO2);
                        house.sensorData.Add(sensFugtighed);
                        house.userID = userID;
-                       dhID.Add(dataReader.GetInt32(1));
+                       house.Name = dataReader.GetString(1);
+                       house.greenHouseID = dataReader.GetInt32(0);
+                       Console.WriteLine(house.ToString());
                        GH.Add(house);
                    }
-               } while (dataReader.NextResult());
-
-               command.Dispose();
-               dataReader.Close();
-
-               for (int i = 0; i < dhID.Count; i++)
-               {
-                   sql = "select Navn, DrivhusID from edwh.DimDrivhus where DH_ID = @DH_ID";
-
-                   command = new SqlCommand(sql, rds);
-                   command.Parameters.AddWithValue("@DH_ID", dhID[i]);
-
-                   dataReader = command.ExecuteReader();
-
-                   string name = null;
-
-                   if (dataReader.Read())
-                   {
-                       GH[i].Name = dataReader.GetString(0);
-                       GH[i].greenHouseID = dataReader.GetInt32(1); 
-                   }
+         
                    command.Dispose();
                    dataReader.Close();
-                 
-               }
-               rds.Close();
-               string message = JsonSerializer.Serialize(GH[1]);
+                   rds.Close();
+               string message = JsonSerializer.Serialize(GH);
                return message;
    
            }
 
-           public async Task<Message> getUser(String username, String password)
+           public string getUser(String username, String password)
            {
-           //    string account = username + ":" + password;
+               SqlConnection rds;
+               rds = new SqlConnection(connectionString);
+               rds.Open();
+               Console.WriteLine("Connection Open");
+               string sql;
+               
 
-           //    string jsonString = JsonSerializer.Serialize(new Message
-           //    {
-           //        command = "GETUSER",
-           //        json = account
-           //    });
-           //    byte[] bytes = Encoding.ASCII.GetBytes(jsonString);
-           //    stream.Write(bytes,0,bytes.Length);
-           //    
-           //    byte[] bytesResponse = new byte[1024 * 1024];
-           //    
-           //    int bytesRead = stream.Read(bytesResponse, 0, bytesResponse.Length);
-
-           //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
-           //    Message message = JsonSerializer.Deserialize<Message>(response);
-               return new Message();
+               sql = "select * from dbo.ejer where Username = @Username and Password = @Password";
+               command = new SqlCommand(sql, rds);
+               command.Parameters.AddWithValue("Username", username);
+               command.Parameters.AddWithValue("Password", password);
+               dataReader = command.ExecuteReader();
+               User user = new User();
+               if (dataReader.Read())
+               {
+                   user.Id = dataReader.GetInt32(0);
+                   user.Username = dataReader.GetString(1);
+                   user.Password = dataReader.GetString(2);
+               }
+               command.Dispose();
+               dataReader.Close();
+               rds.Close();
+               String userSerialized = JsonSerializer.Serialize(user);
+               return userSerialized;
            }
 
            public string getGreenhouseByID(int userId, int greenHouseID)
