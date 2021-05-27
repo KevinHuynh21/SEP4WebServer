@@ -193,26 +193,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\marti\\.nuget\\packages\\": {}
+    "C:\\Users\\Kevin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\marti\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+      "projectUniqueName": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj",
       "projectName": "WebApplication",
-      "projectPath": "C:\\Users\\marti\\RiderProjects\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
-      "packagesPath": "C:\\Users\\marti\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\marti\\RiderProjects\\SEP4WebServer\\WebApplication\\obj\\",
+      "projectPath": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj",
+      "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\marti\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
