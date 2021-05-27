@@ -19,7 +19,7 @@ namespace WebApplication.Controllers
         private NetworkImpl networkimpl = new NetworkImpl();
         
         [HttpGet]
-        public async Task<string> getUser([FromQuery] string username, [FromQuery] string password)
+        public string getUser([FromQuery] string username, [FromQuery] string password)
         {
             string message = networkimpl.getUser(username, password);
             return message;
@@ -27,7 +27,7 @@ namespace WebApplication.Controllers
 
         [HttpGet]
         [Route("{UserId}/Greenhouse")]
-        public async Task<string> getMyGreenhouses([FromRoute] int userId)
+        public string getMyGreenhouses([FromRoute] int userId)
         {
             Console.Write(userId);
             string message = networkimpl.getGreenhouses(userId);
@@ -36,7 +36,7 @@ namespace WebApplication.Controllers
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}")]
-        public async Task<string> getGreenhouseById([FromRoute] int userId,int greenHouseID)
+        public string getGreenhouseById([FromRoute] int userId,int greenHouseID)
         {
             string message = networkimpl.getGreenhouseByID(userId, greenHouseID);
            return message;
@@ -44,7 +44,7 @@ namespace WebApplication.Controllers
         
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/CurrentData")]
-        public async Task<String> getCurrentData([FromRoute] int userId, int greenhouseId)
+        public string getCurrentData([FromRoute] int userId, int greenhouseId)
         {
             string message = networkimpl.GetCurrentData(userId, greenhouseId); 
             return message ;
@@ -52,7 +52,7 @@ namespace WebApplication.Controllers
 
         [HttpGet]
         [Route("{UserId}/Greenhouse/{GreenhouseId}/averageDataHistory")]
-        public async Task<string> getAverageData([FromRoute] int userId, int greenhouseId, [FromQuery] DateTime timeFrom, [FromQuery] DateTime timeTo)
+        public string getAverageData([FromRoute] int userId, int greenhouseId, [FromQuery] DateTime timeFrom, [FromQuery] DateTime timeTo)
         {
             string message = networkimpl.getAverageData(userId, greenhouseId,timeFrom,timeTo);
             return message;
@@ -98,6 +98,14 @@ namespace WebApplication.Controllers
         {
             Message message = await networkimpl.addUser(user);
             return Ok(message.json);
+        }
+        
+        [HttpGet]
+        [Route("{UserId}/GetFriendsGreenhouses")]
+        public string getFriendsGreenhouses([FromRoute] int userId)
+        {
+            string message = networkimpl.getFriendsGreenhouses(userId);
+            return message;
         }
 
     }

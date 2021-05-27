@@ -8,6 +8,8 @@ namespace WebApplication.Data
         public ArrayList Plants;
         public int greenHouseID { get; set; }
         
+        public bool WindowIsOpen { get; set; }
+        
         public int userID { get; set; }
         public string Name { get; set; }
         

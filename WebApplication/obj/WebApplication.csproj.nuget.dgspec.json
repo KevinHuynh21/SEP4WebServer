@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {}
+    "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj": {}
   },
   "projects": {
-    "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {
+    "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+        "projectUniqueName": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj",
         "projectName": "WebApplication",
-        "projectPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
-        "packagesPath": "C:\\Users\\kaspe\\.nuget\\packages\\",
-        "outputPath": "D:\\misc\\gitmap\\SEP4WebServer\\WebApplication\\obj\\",
+        "projectPath": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj",
+        "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\kaspe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -69,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

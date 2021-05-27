@@ -502,5 +502,72 @@ namespace WebApplication.Network
            Console.WriteLine(id);
            return message;
            }
+
+           public string getFriendsGreenhouses(int userId)
+           {
+               SqlConnection rds;
+                   rds = new SqlConnection(connectionString);
+                   rds.Open();
+                   Console.WriteLine("Connection Open");
+                   string sql;
+               
+                   sql = "select DrivhusID from dbo.SharedWith where UserID = @User_ID";
+                   command = new SqlCommand(sql, rds);
+                   command.Parameters.AddWithValue("User_ID", userId);
+                   dataReader = command.ExecuteReader();
+                   
+                   List<Greenhouse> listOfGreenhouses = new List<Greenhouse>();
+                   List<int> listOfgreenhouseID = new List<int>();
+                   int tal;
+                   while(dataReader.Read())
+                   {
+                       tal = dataReader.GetInt32(0);
+                       listOfgreenhouseID.Add(tal);
+                   }
+                   command.Dispose();
+                   dataReader.Close();
+                   rds.Close();
+                   listOfGreenhouses = getGreenhousesForGetFriendsGreenhouses(listOfgreenhouseID);
+                   string message = JsonSerializer.Serialize(listOfGreenhouses);
+                   return message;
+               }
+
+           public List<Greenhouse> getGreenhousesForGetFriendsGreenhouses(List<int> list)
+           {
+               SqlConnection rds;
+               rds = new SqlConnection(connectionString);
+               rds.Open();
+               Console.WriteLine("Connection Open");
+               string sql;
+               List<Greenhouse> listOfGreenhouses = new List<Greenhouse>();
+               for (int i = 0; i < list.Count; i++)
+               {
+                   sql = "select * from dbo.Drivhus where DrivhusID = @Drivhus_ID";
+                   command = new SqlCommand(sql, rds);
+                   command.Parameters.AddWithValue("Drivhus_ID", list[i]);
+                   dataReader = command.ExecuteReader();
+                   Greenhouse greenhouse = null;
+                   if(dataReader.Read())
+                   {
+                       greenhouse = new Greenhouse();
+                       SensorData sensTemperatur = new SensorData("Temperature", dataReader.GetDouble(5));
+                       SensorData sensCO2 = new SensorData("CO2", dataReader.GetDouble(4));
+                       SensorData sensFugtighed = new SensorData("Humidity", dataReader.GetDouble(6));
+                       greenhouse.sensorData.Add(sensTemperatur);
+                       greenhouse.sensorData.Add(sensCO2);
+                       greenhouse.sensorData.Add(sensFugtighed);
+                       greenhouse.userID = dataReader.GetInt32(2);
+                       greenhouse.Name = dataReader.GetString(1);
+                       greenhouse.greenHouseID = dataReader.GetInt32(0);
+                       greenhouse.WindowIsOpen = dataReader.GetBoolean(7);
+                   }
+                   listOfGreenhouses.Add(greenhouse);
+                   dataReader.Close();
+               }
+               command.Dispose();
+               rds.Close();
+               return listOfGreenhouses;
+           }
+           
         }
     }
