@@ -31,7 +31,7 @@ namespace WebApplication.Network
             public NetworkImpl()
             {
                 connectionString = @"Data Source=growbro.cdkppreaz70m.us-east-2.rds.amazonaws.com;Initial Catalog=GrowBroDWH;User ID=admin;Password=adminadmin";
-                getUser("Kasper", "21345");
+               
             }
 
             
@@ -129,13 +129,46 @@ namespace WebApplication.Network
                        house.userID = userID;
                        house.Name = dataReader.GetString(1);
                        house.greenHouseID = dataReader.GetInt32(0);
-                       Console.WriteLine(house.ToString());
+                       /*
+                       house.tempteratureThreshhold[0] = dataReader.GetFloat(7);
+                       house.tempteratureThreshhold[1] = dataReader.GetFloat(8);
+                       house.co2Threshhold[0] = dataReader.GetFloat(9);
+                       house.co2Threshhold[1] = dataReader.GetFloat(10);
+                       house.humidityThreshold[0] = dataReader.GetFloat(11);
+                       house.humidityThreshold[1] = dataReader.GetFloat(12);
+                       house.WindowIsOpen = dataReader.GetBoolean(13);
+                       house.waterFrequency = dataReader.GetInt32(15);
+                       house.waterVolume = dataReader.GetFloat(16);
+                       house.waterTimeOfDay = dataReader.GetString(17);
+                       house.lastWaterDate = dataReader.GetString(18);
+                       house.lastMeasurement = dataReader.GetString(19);
+                       */
                        GH.Add(house);
                    }
+                  command.Dispose();
+                  dataReader.Close();
+                  for (int i = 0; i < GH.Count; i++)
+                  {
+                      sql = "select * from dbo.Plante where DrivhusID = @DrivhusID";
+                      command = new SqlCommand(sql, rds);
+                      command.Parameters.AddWithValue("DrivhusID", GH[i].greenHouseID);
+                      dataReader = command.ExecuteReader();
+                      Plant plant;
+                      while (dataReader.Read())
+                      {
+                          plant = new Plant();
+                          plant.plantID = dataReader.GetInt32(0);
+                          plant.greenHouseID = dataReader.GetInt32(1);
+                          plant.Name = dataReader.GetString(2);
+                          GH[i].Plants.Add(plant);
+                      }
+
+                      command.Dispose();
+                      dataReader.Close();
+                  }
          
-                   command.Dispose();
-                   dataReader.Close();
-                   rds.Close();
+                  
+               rds.Close();
                string message = JsonSerializer.Serialize(GH);
                return message;
    
@@ -198,9 +231,38 @@ namespace WebApplication.Network
                    house.userID = userId;
                    house.Name = dataReader.GetString(1);
                    house.greenHouseID = dataReader.GetInt32(0);
+                   house.tempteratureThreshhold[0] = dataReader.GetFloat(7);
+                   house.tempteratureThreshhold[1] = dataReader.GetFloat(8);
+                   house.co2Threshhold[0] = dataReader.GetFloat(9);
+                   house.co2Threshhold[1] = dataReader.GetFloat(10);
+                   house.humidityThreshold[0] = dataReader.GetFloat(11);
+                   house.humidityThreshold[1] = dataReader.GetFloat(12);
+                   house.WindowIsOpen = dataReader.GetBoolean(13);
+                   house.waterFrequency = dataReader.GetInt32(15);
+                   house.waterVolume = dataReader.GetFloat(16);
+                   house.waterTimeOfDay = dataReader.GetString(17);
+                   house.lastWaterDate = dataReader.GetString(18);
+                   house.lastMeasurement = dataReader.GetString(19);
                    Console.WriteLine(house.ToString());
                }
-         
+
+               command.Dispose();
+               dataReader.Close();
+               
+               sql = "select * from dbo.Plante where DrivhusID = @DrivhusID";
+               command = new SqlCommand(sql, rds);
+               command.Parameters.AddWithValue("DrivhusID", house.greenHouseID);
+               dataReader = command.ExecuteReader();
+               Plant plant;
+               while (dataReader.Read())
+               {
+                   plant = new Plant();
+                   plant.plantID = dataReader.GetInt32(0);
+                   plant.greenHouseID = dataReader.GetInt32(1);
+                   plant.Name = dataReader.GetString(2);
+                   house.Plants.Add(plant);
+               }
+               
                command.Dispose();
                dataReader.Close();
                rds.Close();
@@ -353,8 +415,7 @@ namespace WebApplication.Network
                rds = new SqlConnection(connectionString);
                Console.WriteLine("open");
                rds.Open();
-               string statement = "insert into dbo.Drivhus (DrivhusID,Navn,UserID,CO2,Temperatur,Fugtighed,WindowIsOpen,WaterNow) values(@GH_ID,@Name,@U_ID,@CO2,@Temp,@Hum,@WinIOP,@WaterNow)";
-               Console.WriteLine("command");
+               string statement = "insert into dbo.Drivhus (DrivhusID,Navn,UserID,CO2,Temperatur,Fugtighed,MinThresholdTemp,MaxThresholdTemp,MinThresholdCO2,MaxThresholdCO2,,MinThresholdMoist,MaxThresholdMoist,WindowIsOpen,WaterNow,WaterFrequency,WaterVolume,WaterTimeOfDay,LastWaterDate,LastMeasurement) values(@GH_ID,@Name,@U_ID,@CO2,@Temp,@Hum,@minTemp,@maxTemp,@minCO2,@maxCO2,@minMoist,@maxMoist,@WinIOP,@WaterNow,@waterFreq,@waterVolume,@waterTimeOfDay,@lastWaterDate,@lastMeasurement)";
                command = new SqlCommand(statement, rds);
                command.Parameters.AddWithValue("@GH_ID", greenhouse.greenHouseID);
                command.Parameters.AddWithValue("@Name", greenhouse.Name);
@@ -362,16 +423,38 @@ namespace WebApplication.Network
                command.Parameters.AddWithValue("@CO2", 0);
                command.Parameters.AddWithValue("@Temp", 0);
                command.Parameters.AddWithValue("@Hum", 0);
+               command.Parameters.AddWithValue("@minTemp", greenhouse.tempteratureThreshhold[0]);
+               command.Parameters.AddWithValue("@maxTemp", greenhouse.tempteratureThreshhold[1]);
+               command.Parameters.AddWithValue("@minCO2", greenhouse.co2Threshhold[0]);
+               command.Parameters.AddWithValue("@maxCO2", greenhouse.co2Threshhold[1]);
+               command.Parameters.AddWithValue("@minMoist", greenhouse.humidityThreshold[0]);
+               command.Parameters.AddWithValue("@maxMoist", greenhouse.humidityThreshold[1]);
                command.Parameters.AddWithValue("@WinIOP", 0);
                command.Parameters.AddWithValue("@WaterNow", 0);
-               Console.WriteLine("adapter");
+               command.Parameters.AddWithValue("@waterFreq", greenhouse.waterFrequency);
+               command.Parameters.AddWithValue("@waterVolume", greenhouse.waterVolume);
+               command.Parameters.AddWithValue("@waterTimeOfDay", greenhouse.waterTimeOfDay);
+               command.Parameters.AddWithValue("@lastWaterDate", greenhouse.lastWaterDate);
+               command.Parameters.AddWithValue("@lastMeasurement", greenhouse.lastMeasurement);
                adapter = new SqlDataAdapter();
-               Console.WriteLine("execute");
                adapter.UpdateCommand = command;
                adapter.UpdateCommand.ExecuteNonQuery();
                Console.WriteLine("close and dispose");
                adapter.Dispose();
                command.Dispose();
+               for (int i = 0; i < greenhouse.Plants.Count; i++)
+               {
+                   string sql = "insert into dbo.Plante (DrivhusID,Navn,PicURL) values(@GH_ID,@Name,@URL";
+                   command = new SqlCommand(statement, rds);
+                   command.Parameters.AddWithValue("@GH_ID", greenhouse.greenHouseID);
+                   command.Parameters.AddWithValue("@Name", greenhouse.Plants[i].Name);
+                   command.Parameters.AddWithValue("@URL", greenhouse.Plants[i].Url);
+                   adapter = new SqlDataAdapter();
+                   adapter.UpdateCommand = command;
+                   adapter.UpdateCommand.ExecuteNonQuery();
+                   adapter.Dispose();
+                   command.Dispose();
+               }
                for (int i = 0; i < greenhouse.sharedWith.Count; i++)
                {
                    statement = "INSERT INTO dbo.SharedWith (UserID,DrivhusID) VALUES (@UserID,@DrivhusID)";
@@ -412,15 +495,12 @@ namespace WebApplication.Network
            {
                rds = new SqlConnection(connectionString);
                rds.Open();
-               string statement = "insert into dbo.Plante (DrivhusID,Navn,TemperaturKrav,CO2Krav,FugtighedsKrav,PlanteScore) values(@GH_ID,@Name,@Temp,@CO2,@Hum,@PlSc)";
+               string statement = "insert into dbo.Plante (DrivhusID,Navn,PicURL) values(@GH_ID,@Name,@URL)";
                Console.WriteLine("command");
                command = new SqlCommand(statement, rds);
                command.Parameters.AddWithValue("@GH_ID", plant.greenHouseID);
                command.Parameters.AddWithValue("@Name", plant.Name);
-               command.Parameters.AddWithValue("@Temp", plant.TemperatureRequirement);
-               command.Parameters.AddWithValue("@CO2",plant.CO2Requirement );
-               command.Parameters.AddWithValue("@Hum", plant.HumidityRequirement);
-               command.Parameters.AddWithValue("@PlSc", plant.PlantScore);
+               command.Parameters.AddWithValue("@URL", plant.Url);
                Console.WriteLine("adapter");
                adapter = new SqlDataAdapter();
                Console.WriteLine("execute");

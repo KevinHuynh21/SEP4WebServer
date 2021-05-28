@@ -6,7 +6,7 @@ namespace WebApplication.Data
 {
     public class Greenhouse
     {
-        public ArrayList Plants;
+        public List<Plant> Plants { get; set; }
         public int greenHouseID { get; set; }
         
         public bool WindowIsOpen { get; set; }
@@ -27,9 +27,15 @@ namespace WebApplication.Data
         public ArrayList sensorData { get; set; }
         
         public ArrayList sharedWith { get; set; }
+        
+        public ArrayList tempteratureThreshhold { get; set; }
+        
+        public ArrayList humidityThreshold { get; set; }
+
+        public ArrayList co2Threshhold { get; set; }
    
 
-        public Greenhouse(string name, int greenHouseId, int userId,ArrayList plants,int waterFrequency,double waterVolume,string waterTimeOfDay, string lastWaterDate,ArrayList sensorData, ArrayList SharedWith)
+        public Greenhouse(string name, int greenHouseId, int userId,List<Plant> plants,int waterFrequency,double waterVolume,string waterTimeOfDay, string lastWaterDate,ArrayList sensorData, ArrayList SharedWith)
         {
             Plants = plants;
             greenHouseID = greenHouseId;
@@ -47,6 +53,7 @@ namespace WebApplication.Data
         public Greenhouse()
         {
             sensorData = new ArrayList();
+            Plants = new List<Plant>();
         }
 
         public void AddPlant(Plant plant)
@@ -59,9 +66,6 @@ namespace WebApplication.Data
             Plants.Remove(plant);
         }
 
-        public ArrayList GetPlants()
-        {
-            return Plants;
-        }
+    
     }
 }
