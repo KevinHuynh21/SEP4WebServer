@@ -28,11 +28,11 @@ namespace WebApplication.Data
         
         public ArrayList sharedWith { get; set; }
         
-        public ArrayList tempteratureThreshhold { get; set; }
+        public ArrayList tempteratureThreshold { get; set; }
         
         public ArrayList humidityThreshold { get; set; }
 
-        public ArrayList co2Threshhold { get; set; }
+        public ArrayList co2Threshold { get; set; }
    
 
         public Greenhouse(string name, int greenHouseId, int userId,List<Plant> plants,int waterFrequency,double waterVolume,string waterTimeOfDay, string lastWaterDate,ArrayList sensorData, ArrayList SharedWith)
@@ -55,9 +55,9 @@ namespace WebApplication.Data
             sensorData = new ArrayList();
             Plants = new List<Plant>();
             sharedWith = new ArrayList();
-            tempteratureThreshhold = new ArrayList();
+            tempteratureThreshold = new ArrayList();
             humidityThreshold = new ArrayList();
-            co2Threshhold = new ArrayList();
+            co2Threshold = new ArrayList();
         }
 
         public void AddPlant(Plant plant)
