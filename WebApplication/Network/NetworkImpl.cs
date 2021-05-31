@@ -261,6 +261,7 @@ namespace WebApplication.Network
                    plant.plantID = dataReader.GetInt32(0);
                    plant.greenHouseID = dataReader.GetInt32(1);
                    plant.Name = dataReader.GetString(2);
+                   plant.Url = dataReader.GetString(3);
                    house.Plants.Add(plant);
                }
                
