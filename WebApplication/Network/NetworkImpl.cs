@@ -30,8 +30,9 @@ namespace WebApplication.Network
             TcpClient client;
             public NetworkImpl()
             {
-                connectionString = "Data source=DESKTOP-HFHHMQP;database=GrowBroDWH;User ID=host;Password=123";
-               
+            connectionString = @"Data Source=growbro.cdkppreaz70m.us-east-2.rds.amazonaws.com;Initial Catalog=GrowBroDWH;User ID=admin;Password=adminadmin";
+
+
             }
 
             
@@ -454,7 +455,7 @@ namespace WebApplication.Network
            //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
            //    Message message = JsonSerializer.Deserialize<Message>(response);
            Message message = new Message();
-           message.json = JsonSerializer.Serialize(greenhouse.greenHouseID);
+           message.json = "{\"Value\":" + greenhouse.greenHouseID + "}"; ;
            return message;
            }
 
@@ -507,7 +508,7 @@ namespace WebApplication.Network
            //    string response = Encoding.ASCII.GetString(bytesResponse, 0, bytesRead);
            //    Message message = JsonSerializer.Deserialize<Message>(response);
             Message message = new Message();
-            message.json = JsonSerializer.Serialize(id);
+            message.json = "{\"Value\":" + id + "}"; ;
             Console.WriteLine(id);
             return message;
            }
@@ -545,7 +546,7 @@ namespace WebApplication.Network
                dataReader.Close();
                rds.Close();
                Message message = new Message();
-           message.json = JsonSerializer.Serialize(id);
+           message.json = "{\"Value\":" + id + "}"; ;
            Console.WriteLine(id);
            return message;
            }

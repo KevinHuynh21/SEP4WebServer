@@ -1,0 +1,16 @@
+
+{
+    "comment" : "This file is used to help set default values when using the dotnet CLI extension Amazon.ElasticBeanstalk.Tools. For more information run \"dotnet eb --help\" from the project root.",
+    "profile" : "default",
+    "region"  : "us-east-2",
+    "application" : "GrowBro webAPI",
+    "environment" : "Growbrowebapi-env-1",
+    "cname"       : "growbro",
+    "solution-stack" : "64bit Windows Server 2019 v2.6.5 running IIS 10.0",
+    "environment-type" : "SingleInstance",
+    "instance-type"    : "t3a.medium",
+    "key-pair"         : "server-new-test-key",
+    "iis-website"      : "Default Web Site",
+    "app-path"         : "/",
+    "enable-xray"      : false
+}
