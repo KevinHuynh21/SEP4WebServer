@@ -54,6 +54,10 @@ namespace WebApplication.Data
         {
             sensorData = new ArrayList();
             Plants = new List<Plant>();
+            sharedWith = new ArrayList();
+            tempteratureThreshhold = new ArrayList();
+            humidityThreshold = new ArrayList();
+            co2Threshhold = new ArrayList();
         }
 
         public void AddPlant(Plant plant)

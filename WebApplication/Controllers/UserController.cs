@@ -79,6 +79,8 @@ namespace WebApplication.Controllers
         [Route("{UserId}/addGreenhouse/")]
         public async Task<ActionResult<String>> addGreenhouse([FromBody] Greenhouse greenhouse)
         {
+            string test = JsonSerializer.Serialize(greenhouse);
+            Console.WriteLine(test);
             Message message = await networkimpl.addGreenHouse(greenhouse);
             return Ok(message.json);
         }
