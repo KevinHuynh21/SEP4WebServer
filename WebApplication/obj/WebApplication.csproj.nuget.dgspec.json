@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj": {}
+    "C:\\Users\\kaspe\\source\\repos\\KevinHuynh21\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj": {
+    "C:\\Users\\kaspe\\source\\repos\\KevinHuynh21\\SEP4WebServer\\WebApplication\\WebApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj",
+        "projectUniqueName": "C:\\Users\\kaspe\\source\\repos\\KevinHuynh21\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
         "projectName": "WebApplication",
-        "projectPath": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\WebApplication.csproj",
-        "packagesPath": "C:\\Users\\Kevin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kevin\\Desktop\\4Semester\\SEP4\\WebServerAndroid\\WebApplication\\obj\\",
+        "projectPath": "C:\\Users\\kaspe\\source\\repos\\KevinHuynh21\\SEP4WebServer\\WebApplication\\WebApplication.csproj",
+        "packagesPath": "C:\\Users\\kaspe\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kaspe\\source\\repos\\KevinHuynh21\\SEP4WebServer\\WebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Kevin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\kaspe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -41,10 +43,6 @@
             "Microsoft.AspNet.Identity.EntityFramework": {
               "target": "Package",
               "version": "[2.2.3, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[6.0.0-preview.4.21253.1, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
@@ -73,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }
