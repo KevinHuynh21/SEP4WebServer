@@ -28,7 +28,7 @@ namespace WebApplication.Data
         
         public ArrayList sharedWith { get; set; }
         
-        public ArrayList tempteratureThreshold { get; set; }
+        public ArrayList temperatureThreshold { get; set; }
         
         public ArrayList humidityThreshold { get; set; }
 
@@ -55,7 +55,7 @@ namespace WebApplication.Data
             sensorData = new ArrayList();
             Plants = new List<Plant>();
             sharedWith = new ArrayList();
-            tempteratureThreshold = new ArrayList();
+            temperatureThreshold = new ArrayList();
             humidityThreshold = new ArrayList();
             co2Threshold = new ArrayList();
         }

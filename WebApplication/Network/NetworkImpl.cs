@@ -130,8 +130,8 @@ namespace WebApplication.Network
                        house.userID = userID;
                        house.Name = dataReader.GetString(1);
                        house.greenHouseID = dataReader.GetInt32(0);
-                       house.tempteratureThreshold.Add(dataReader.GetDouble(7));
-                       house.tempteratureThreshold.Add(dataReader.GetDouble(8));
+                       house.temperatureThreshold.Add(dataReader.GetDouble(7));
+                       house.temperatureThreshold.Add(dataReader.GetDouble(8));
                        house.co2Threshold.Add(dataReader.GetDouble(9));
                        house.co2Threshold.Add(dataReader.GetDouble(10));
                        house.humidityThreshold.Add(dataReader.GetDouble(11));
@@ -232,8 +232,8 @@ namespace WebApplication.Network
                    house.userID = userId;
                    house.Name = dataReader.GetString(1);
                    house.greenHouseID = dataReader.GetInt32(0);
-                   house.tempteratureThreshold.Add(dataReader.GetDouble(7));
-                   house.tempteratureThreshold.Add(dataReader.GetDouble(8));
+                   house.temperatureThreshold.Add(dataReader.GetDouble(7));
+                   house.temperatureThreshold.Add(dataReader.GetDouble(8));
                    house.co2Threshold.Add(dataReader.GetDouble(9));
                    house.co2Threshold.Add(dataReader.GetDouble(10));
                    house.humidityThreshold.Add(dataReader.GetDouble(11));
@@ -392,8 +392,8 @@ namespace WebApplication.Network
                command.Parameters.AddWithValue("@CO2", 0);
                command.Parameters.AddWithValue("@Temp", 0);
                command.Parameters.AddWithValue("@Hum", 0);
-               command.Parameters.AddWithValue("@minTemp", double.Parse(greenhouse.tempteratureThreshold[0].ToString()));
-               command.Parameters.AddWithValue("@maxTemp", double.Parse(greenhouse.tempteratureThreshold[1].ToString()));
+               command.Parameters.AddWithValue("@minTemp", double.Parse(greenhouse.temperatureThreshold[0].ToString()));
+               command.Parameters.AddWithValue("@maxTemp", double.Parse(greenhouse.temperatureThreshold[1].ToString()));
                command.Parameters.AddWithValue("@minCO2", double.Parse(greenhouse.co2Threshold[0].ToString()));
                command.Parameters.AddWithValue("@maxCO2", double.Parse(greenhouse.co2Threshold[1].ToString()));
                command.Parameters.AddWithValue("@minMoist", double.Parse(greenhouse.humidityThreshold[0].ToString()));
@@ -414,7 +414,7 @@ namespace WebApplication.Network
                for (int i = 0; i < greenhouse.Plants.Count; i++)
                {
                    string sql = "insert into dbo.Plante (DrivhusID,Navn,PicURL) values(@GH_ID,@Name,@URL";
-                   command = new SqlCommand(statement, rds);
+                   command = new SqlCommand(sql, rds);
                    command.Parameters.AddWithValue("@GH_ID", greenhouse.greenHouseID);
                    command.Parameters.AddWithValue("@Name", greenhouse.Plants[i].Name);
                    command.Parameters.AddWithValue("@URL", greenhouse.Plants[i].Url);
@@ -608,8 +608,8 @@ namespace WebApplication.Network
                        house.userID = dataReader.GetInt32(2);
                        house.Name = dataReader.GetString(1);
                        house.greenHouseID = dataReader.GetInt32(0);
-                       house.tempteratureThreshold.Add(dataReader.GetDouble(7));
-                       house.tempteratureThreshold.Add(dataReader.GetDouble(8));
+                       house.temperatureThreshold.Add(dataReader.GetDouble(7));
+                       house.temperatureThreshold.Add(dataReader.GetDouble(8));
                        house.co2Threshold.Add(dataReader.GetDouble(9));
                        house.co2Threshold.Add(dataReader.GetDouble(10));
                        house.humidityThreshold.Add(dataReader.GetDouble(11));

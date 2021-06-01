@@ -1,6 +1,7 @@
 C:\Users\kaspe\AppData\Local\Temp\AWSDeploy.41f4268e\package\WebApplication.exe
 C:\Users\kaspe\AppData\Local\Temp\AWSDeploy.41f4268e\package\appsettings.Development.json
 C:\Users\kaspe\AppData\Local\Temp\AWSDeploy.41f4268e\package\appsettings.json
+C:\Users\kaspe\AppData\Local\Temp\AWSDeploy.41f4268e\package\aws-beanstalk-tools-defaults.json
 C:\Users\kaspe\AppData\Local\Temp\AWSDeploy.41f4268e\package\WebApplication.dll
 C:\Users\kaspe\AppData\Local\Temp\AWSDeploy.41f4268e\package\WebApplication.deps.json
 C:\Users\kaspe\AppData\Local\Temp\AWSDeploy.41f4268e\package\WebApplication.runtimeconfig.json
