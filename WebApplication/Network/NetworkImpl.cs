@@ -385,7 +385,6 @@ namespace WebApplication.Network
                rds.Open();
                string statement = "insert into dbo.Drivhus (DrivhusID,Navn,UserID,CO2,Temperatur,Fugtighed,MinThresholdTemp,MaxThresholdTemp,MinThresholdCO2,MaxThresholdCO2,MinThresholdMoist,MaxThresholdMoist,WindowIsOpen,WaterNow,WaterFrequency,WaterVolume,WaterTimeOfDay,LastWaterDate,LastMeasurement) values(@GH_ID,@Name,@U_ID,@CO2,@Temp,@Hum,@minTemp,@maxTemp,@minCO2,@maxCO2,@minMoist,@maxMoist,@WinIOP,@WaterNow,@waterFreq,@waterVolume,@waterTimeOfDay,@lastWaterDate,@lastMeasurement)";
                command = new SqlCommand(statement, rds);
-               Console.WriteLine(greenhouse.Name);
                command.Parameters.AddWithValue("@GH_ID", greenhouse.greenHouseID);
                command.Parameters.AddWithValue("@Name", greenhouse.Name);
                command.Parameters.AddWithValue("@U_ID", greenhouse.userID);
@@ -413,8 +412,8 @@ namespace WebApplication.Network
                command.Dispose();
                for (int i = 0; i < greenhouse.Plants.Count; i++)
                {
-                   string sql = "insert into dbo.Plante (DrivhusID,Navn,PicURL) values(@GH_ID,@Name,@URL";
-                   command = new SqlCommand(statement, rds);
+                   string sql = "insert into dbo.Plante (DrivhusID,Navn,PicURL) values(@GH_ID,@Name,@URL)";
+                   command = new SqlCommand(sql, rds);
                    command.Parameters.AddWithValue("@GH_ID", greenhouse.greenHouseID);
                    command.Parameters.AddWithValue("@Name", greenhouse.Plants[i].Name);
                    command.Parameters.AddWithValue("@URL", greenhouse.Plants[i].Url);
